@@ -11,8 +11,12 @@ export async function connectDB() {
       await mongoose.connect(mongoUri);
       console.log(`[MongoDB] Connected to external MongoDB at ${mongoUri}`);
     } else {
-      console.log('[MongoDB] MONGODB_URI not provided. Starting MongoMemoryServer fallback...');
-      mongoMemoryServer = await MongoMemoryServer.create();
+      console.log('[MongoDB] MONGODB_URI not provided. Starting MongoMemoryServer fallback (version 7.0.3)...');
+      mongoMemoryServer = await MongoMemoryServer.create({
+        binary: {
+          version: '7.0.3',
+        },
+      });
       const uri = mongoMemoryServer.getUri();
       await mongoose.connect(uri);
       console.log(`[MongoDB] Connected to MongoMemoryServer at ${uri}`);
@@ -20,7 +24,11 @@ export async function connectDB() {
   } catch (err) {
     console.warn(`[MongoDB] Primary connection failed: ${err.message}. Falling back to MongoMemoryServer...`);
     try {
-      mongoMemoryServer = await MongoMemoryServer.create();
+      mongoMemoryServer = await MongoMemoryServer.create({
+        binary: {
+          version: '7.0.3',
+        },
+      });
       const uri = mongoMemoryServer.getUri();
       await mongoose.connect(uri);
       console.log(`[MongoDB] Connected to MongoMemoryServer at ${uri}`);
