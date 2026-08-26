@@ -1,0 +1,9 @@
+{
+  "name": "blast-radius-analyzer-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "npm run build --prefix client && npm install --prefix server",
+    "start": "npm start --prefix server"
+  }
+}
